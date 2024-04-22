@@ -1,11 +1,12 @@
-from random import random
-from monte_carlo import (
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath("monte_carlo.py")))
+from Herramientas.monte_carlo import (
     monteCarlo01,
     monteCarlo0INF,
     monteCarloAB,
     monteCarlo01_2,
-    monteCarlo0INF_2,
-    monteCarloAB_2
+    monteCarlo0INF_2
 )
 import math
 
