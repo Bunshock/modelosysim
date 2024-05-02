@@ -114,7 +114,7 @@ if __name__ == "__main__":
                 args.M, args.a, args.c, test_seed)
             if period_length > 0 and period_length > longest_period[0]:
                 longest_period = (period_length, period_start, test_seed)
-            if (period_length == args.M and args.c > 0) or
+            if (period_length == args.M and args.c > 0) or \
             (period_length == args.M - 1 and args.c == 0):
                 max_seeds.append(test_seed)
 
@@ -124,7 +124,7 @@ if __name__ == "__main__":
             print(f'Maximum period found: {longest_period[0]},  '
                   'for seed: {longest_period[2]},  '
                   'starting at y{longest_period[1]}')
-        elif (longest_period[0] == args.M and args.c > 0) or
+        elif (longest_period[0] == args.M and args.c > 0) or \
         (longest_period[0] == args.M - 1 and args.c == 0):
             print(f"Maximum period found is {longest_period[0]}!!")
             print(f"Seeds for which the generator has maximum period (K=M): ",

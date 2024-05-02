@@ -1,11 +1,8 @@
-"""
-General idea for Monte Carlo algorithm implementation on (0, 1):
-"""
-
 from random import random
 
-# INTEGRALES DE UNA VARIABLE #
-
+"""
+1-variable Monte Carlo
+"""
 
 # Interval : (0, 1)
 def monteCarlo01(g, N):
@@ -25,14 +22,6 @@ def monteCarloAB(g, a, b, N):
     return integral * (b-a) / N
 
 
-"""
-Another way to implement the method for (a, b) is to define
-h(x) = g(a + (b-a) * x) * (b-a) , y in (0, 1)
-and use monteCarlo01 method. Same goes for (0, inf)
-and h(x) = (1/x^2) * g(1/x  - 1)
-"""
-
-
 # Interval : (0, inf)
 def monteCarlo0INF(g, N):
     integral = 0
@@ -41,8 +30,16 @@ def monteCarlo0INF(g, N):
         integral += g((1/X) - 1) / (X ** 2)
     return integral / N
 
-# INTEGRALES MULTIPLES #
+"""
+Another way to implement the method for (a, b) is to define
+h(x) = g(a + (b-a) * x) * (b-a) , y in (0, 1)
+and use monteCarlo01 method. Same goes for (0, inf)
+and h(x) = (1/x^2) * g(1/x  - 1)
+"""
 
+"""
+2-variable Monte Carlo
+"""
 
 # Interval : X->(0, 1), Y->(0, 1)
 def monteCarlo01_2(g, N):
