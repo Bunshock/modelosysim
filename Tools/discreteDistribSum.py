@@ -4,6 +4,8 @@ If a = b, then it calculates P(X = a)
 """
 
 import math
+import matplotlib.pyplot as plt
+import numpy as np
 
 # Discrete distribution data
 DISC_DIST_ARGS = [
@@ -96,10 +98,15 @@ def distribSum(distrib_index, a, b, *params):
 
     # Sum P(X=a) + ... + P(X=b)
     sum = 0
-    for i in range(a, b+1):
-        sum += distrib_fun(*params, i)
+    x_vec, y_vec = [], []
+    for x in range(a, b+1):
+        y = distrib_fun(*params, x)
+        sum += y
 
-    return sum
+        x_vec.append(x)
+        y_vec.append(y)
+
+    return sum, x_vec, y_vec
 
 
 if __name__ == '__main__':
@@ -132,8 +139,26 @@ if __name__ == '__main__':
         args.append(interpretedNumberType(arg))
 
     a = interpretedNumberType(input('Enter lower bound (a): '))
-    b = interpretedNumberType(input('Enter lower bound (b): '))
+    b = interpretedNumberType(input('Enter upper bound (b): '))
 
     # Print result
-    result = distribSum(distr, a, b, *args)
+    result, x_vec, y_vec = distribSum(distr, a, b, *args)
     print(f'P({a} <= X <= {b}) = {result}')
+    
+    # Show every calculated point in a graph
+    plt.scatter(x_vec, y_vec)
+
+    # Set x and y axis
+    plt.xticks(range(math.floor(min(x_vec)), math.ceil(max(x_vec))+1))
+
+    y_step = max(y_vec) / 15
+    plt.yticks(np.arange(min(y_vec), max(y_vec)+y_step, y_step))
+    
+    # Draw lines between x axis and graph points
+    plt.vlines(x_vec, 0, y_vec)
+    
+    # Show horizontal grid lines
+    plt.grid(axis='y')
+
+    # Show the graph
+    plt.show()

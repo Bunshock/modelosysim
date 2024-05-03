@@ -3,7 +3,7 @@ Calculator for probabilities P(a < X < b) for a given continuous v.a.
 """
 
 import math
-from Tools.monteCarlo import monteCarloAB, monteCarlo0INF
+from monteCarlo import monteCarlo
 
 CONT_DIST_ARGS = [
     [
@@ -71,7 +71,7 @@ if __name__ == '__main__':
         args.append(interpretedNumberType(arg))
 
     a = interpretedNumberType(input('Enter lower bound (a): '))
-    b = interpretedNumberType(input('Enter lower bound (b): '))
+    b = interpretedNumberType(input('Enter upper bound (b): '))
     assert b == 'inf' or b > a
 
     # Input number of simulations
@@ -79,22 +79,23 @@ if __name__ == '__main__':
     assert N_SIM > 0
 
     for _ in range(N_SIM):
-        N = int(input('How many iterations for next simulation? '))
+        iterations = int(input('How many iterations for next simulation? '))
 
         # See which of the three Monte Carlo methods to use and adapt
-        # to them
+        # to them. For now, only plot the ones with interval (a, b) with
+        # b not infinity
         distr_fun = CONT_DIST_ARGS[distr][2]
         result = 0
         if b == 'inf':
             if a == 0:
-                result = monteCarlo0INF(lambda x: distr_fun(*args, x), N)
+                result = monteCarlo('1-0INF', *[lambda x: distr_fun(*args, x)], N=iterations)
             elif a > 0:
-                result = monteCarlo0INF(lambda x: (x > a) * distr_fun(*args, x), N)
+                result = monteCarlo('1-0INF', *[lambda x: (x > a) * distr_fun(*args, x)], N=iterations)
             else:
-                r1 = monteCarlo0INF(lambda x: distr_fun(*args, x), N)
-                r2 = monteCarloAB(lambda x: distr_fun(*args, x), a, 0, N)
+                r1 = monteCarlo('1-0INF', *[lambda x: distr_fun(*args, x)], N=iterations)
+                r2 = monteCarlo('1-AB', *[lambda x: distr_fun(*args, x), a, 0], N=iterations)
                 result = r1 + r2
-            print(f'{N} iterations: P(X > a) = {result}')
+            print(f'{iterations} iterations: P(X > a) = {result}')
         else:
-            result = monteCarloAB(lambda x: distr_fun(*args, x), a, b, N)
-            print(f'{N} iterations: P(a < X < b) = {result}')
+            result = monteCarlo('1-AB', *[lambda x: distr_fun(*args, x), a, b], N=iterations, graph=True)
+            print(f'{iterations} iterations: P(a < X < b) = {result}')

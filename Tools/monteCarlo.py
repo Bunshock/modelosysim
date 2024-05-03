@@ -1,68 +1,56 @@
 from random import random
+import matplotlib.pyplot as plt
+import math
+import numpy as np
 
-"""
-1-variable Monte Carlo
-"""
+# Maybe change to Hash-map
+MONTE_CARLO_METHOD = {
+    '1-01': lambda g, x: g(x),
+    '1-AB': lambda g, a, b, x: g(a + (b-a) * x),
+    '1-0INF': lambda g, x: g((1/x) - 1) / (x ** 2),
+    '2-01': lambda g, x, y: g(x, y),
+    '2-AB': lambda g, a, b, c, d, x, y: g(a + (b-a)*x, c + (d-c)*y),
+    '2-0INF': lambda g, x, y: g(1/x - 1, 1/y - 1) / ((x ** 2) * (y ** 2))
+}
 
-# Interval : (0, 1)
-def monteCarlo01(g, N):
+
+# Returns the aproximated value of the area under the curve on the
+# specified interval, depending on the number of iterations N
+# If graph is set to True, it shows a graph of the calculation
+# (with values adapted to the (0, 1) interval)
+# For now, it only works with a single variable calculation
+def monteCarlo(method, *args, N, graph=False):
+    if graph:
+        x_vec, y_vec = [], []
+    
     integral = 0
     for _ in range(N):
         X = random()
-        integral += g(X)
-    return integral / N
+        y = MONTE_CARLO_METHOD[method](*args, X)
 
+        if graph:
+            x_vec.append(X)
+            y_vec.append(y)
 
-# Interval : (a, b)    (a < b)
-def monteCarloAB(g, a, b, N):
-    integral = 0
-    for _ in range(N):
-        X = random()
-        integral += g(a + (b-a) * X)
-    return integral * (b-a) / N
+        integral += y
 
+    if graph:
+        # Show every calculated point in a graph
+        plt.scatter(x_vec, y_vec)
 
-# Interval : (0, inf)
-def monteCarlo0INF(g, N):
-    integral = 0
-    for _ in range(N):
-        X = random()
-        integral += g((1/X) - 1) / (X ** 2)
-    return integral / N
+        # Set x and y axis
+        plt.xticks(range(math.floor(min(x_vec)), math.ceil(max(x_vec))+1))
 
-"""
-Another way to implement the method for (a, b) is to define
-h(x) = g(a + (b-a) * x) * (b-a) , y in (0, 1)
-and use monteCarlo01 method. Same goes for (0, inf)
-and h(x) = (1/x^2) * g(1/x  - 1)
-"""
+        y_step = max(y_vec) / 15
+        plt.yticks(np.arange(min(y_vec), max(y_vec)+y_step, y_step))
+        
+        # Draw lines between x axis and graph points
+        plt.vlines(x_vec, 0, y_vec)
+        
+        # Show horizontal grid lines
+        plt.grid(axis='y')
 
-"""
-2-variable Monte Carlo
-"""
+        # Show the graph
+        plt.show()
 
-# Interval : X->(0, 1), Y->(0, 1)
-def monteCarlo01_2(g, N):
-    integral = 0
-    for _ in range(N):
-        X, Y = random(), random()
-        integral += g(X, Y)
-    return integral / N
-
-
-# Interval : X->(a, b), Y->(c, d)
-def monteCarloAB_2(g, a, b, c, d, N):
-    integral = 0
-    for _ in range(N):
-        X, Y = random(), random()
-        integral += g(a + (b-a)*X, c + (d-c)*Y)
-    return integral * (b-a) * (d-c) / N
-
-
-# Interval : X->(0, inf), Y->(0, inf)
-def monteCarlo0INF_2(g, N):
-    integral = 0
-    for _ in range(N):
-        X, Y = random(), random()
-        integral += g(1/X - 1, 1/Y - 1) / ((X ** 2) * (Y ** 2))
     return integral / N
