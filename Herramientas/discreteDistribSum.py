@@ -6,7 +6,7 @@ If a = b, then it calculates P(X = a)
 import math
 
 # Discrete distribution data
-DIST_ARGS = [
+DISC_DIST_ARGS = [
     [
         'Binomial',
         ['p', 'n'],
@@ -29,7 +29,7 @@ DIST_ARGS = [
     ],
     [
         'Hipergeometric',
-        ['n, N, M'],
+        ['n', 'N', 'M'],
         lambda n, N, M, x: (math.comb(N, x)*math.comb(M, n-x)) / math.comb(N+M, x)
     ],
     [
@@ -89,10 +89,10 @@ def checkUniform(n, a, b):
 # Function that calculates P(a <= X <= b)
 def distribSum(distrib_index, a, b, *params):
     # Check preconditions
-    globals()[f'check{DIST_ARGS[distrib_index][0]}'](*params, a, b)
+    globals()[f'check{DISC_DIST_ARGS[distrib_index][0]}'](*params, a, b)
 
     # Get distribution function
-    distrib_fun = DIST_ARGS[distrib_index][2]
+    distrib_fun = DISC_DIST_ARGS[distrib_index][2]
 
     # Sum P(X=a) + ... + P(X=b)
     sum = 0
@@ -112,23 +112,23 @@ if __name__ == '__main__':
 
     # Print available distributions
     print('Available distributions')
-    for i in range(len(DIST_ARGS)):
-        print(f'{i+1} - {DIST_ARGS[i][0]}(', end='')
-        for j in range(len(DIST_ARGS[i][1])):
-            if j == len(DIST_ARGS[i][1]) - 1:
-                print(DIST_ARGS[i][1][j], end='')
+    for i in range(len(DISC_DIST_ARGS)):
+        print(f'{i+1} - {DISC_DIST_ARGS[i][0]}(', end='')
+        for j in range(len(DISC_DIST_ARGS[i][1])):
+            if j == len(DISC_DIST_ARGS[i][1]) - 1:
+                print(DISC_DIST_ARGS[i][1][j], end='')
             else:
-                print(DIST_ARGS[i][1][j], end=',')
+                print(DISC_DIST_ARGS[i][1][j], end=',')
         print(')')
 
     # Select desired distribution
     distr = int(input('Enter desired distribution number: ')) - 1
-    assert distr in range(len(DIST_ARGS))
+    assert distr in range(len(DISC_DIST_ARGS))
 
     # Input every distribution parameter
     args = []
-    for i in range(len(DIST_ARGS[distr][1])):
-        arg = input(f'Input {DIST_ARGS[distr][1][i]} value: ')
+    for i in range(len(DISC_DIST_ARGS[distr][1])):
+        arg = input(f'Input {DISC_DIST_ARGS[distr][1][i]} value: ')
         args.append(interpretedNumberType(arg))
 
     a = interpretedNumberType(input('Enter lower bound (a): '))
