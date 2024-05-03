@@ -1,4 +1,4 @@
-from Herramientas.monte_carlo import (
+from Tools.monteCarlo import (
     monteCarlo01,
     monteCarlo0INF,
     monteCarloAB,
@@ -10,6 +10,7 @@ import math
 N_SIM = 1_000_000
 
 
+# Single-variable
 # a)
 def a(x):
     return (1 - (x ** 2)) ** (3/2)
@@ -46,7 +47,7 @@ def d(x):
 print(f'd) {monteCarlo0INF(d, N_SIM)}')
 
 
-# Integral multiple #
+# Multiple-variable
 # e)
 def e(x, y):
     return math.e ** ((x + y) ** 2)

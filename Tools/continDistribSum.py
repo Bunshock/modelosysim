@@ -1,9 +1,9 @@
 """
-Calculator for probabilities P(a <= X <= b) for a given discrete v.a.
+Calculator for probabilities P(a < X < b) for a given continuous v.a.
 """
 
 import math
-from monte_carlo import monteCarlo01, monteCarloAB, monteCarlo0INF
+from Tools.monteCarlo import monteCarloAB, monteCarlo0INF
 
 CONT_DIST_ARGS = [
     [
