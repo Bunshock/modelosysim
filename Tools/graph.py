@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from collections import Counter
 
 # Discrete graphs
 
@@ -14,12 +15,24 @@ def generateDVA(N_SIM, distrib, *args):
 
 
 # Graph discrete distribution given an array of numbers 'x_vec' generated
-# by said distribution
-def graphDVA(x_vec, title='Graph'):
-    plt.title(title)
+# by said distribution with 'N_SIM' iterations
+def graphDVA(x_vec, N_SIM, title='Graph'):
+
+    # Get probabilities array
+    x_vec_counts = Counter(x_vec)
+    probs_vec = [count/N_SIM for count in x_vec_counts.values()]
+
+    x_axis_vec = x_vec_counts.keys()
+    x_min, x_max = min(x_vec_counts.keys()), max(x_vec_counts.keys())
+    
+    # Set up graph title and axis lines
+    plt.title(f'{title}\nSimulations: {N_SIM}')
     plt.grid(axis='y', color='blue', linestyle='--', linewidth=0.5)
-    plt.hist(x_vec, color = 'lightblue', edgecolor = 'black',
-         bins = np.arange(min(x_vec), max(x_vec) + 2) - 0.5)
-    plt.xticks(range(min(x_vec), max(x_vec) + 1))
-    plt.xlim([min(x_vec) - 1, max(x_vec) + 1])
+
+    # Graph histogram
+    plt.bar(x=x_axis_vec, height=probs_vec, width=1, color = 'lightblue', edgecolor = 'black')
+    plt.xticks(range(x_min, x_max + 1))
+    plt.xlim([x_min - 1, x_max + 1])
+
+    # Show graph
     plt.show()
