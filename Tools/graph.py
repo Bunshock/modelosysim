@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 # Discrete graphs
 
@@ -15,7 +16,10 @@ def generateDVA(N_SIM, distrib, *args):
 # Graph discrete distribution given an array of numbers 'x_vec' generated
 # by said distribution
 def graphDVA(x_vec, title='Graph'):
-    plt.hist(x_vec, color = 'blue', edgecolor = 'black',
-         bins = range(min(x_vec), max(x_vec)+2))
     plt.title(title)
+    plt.grid(axis='y', color='blue', linestyle='--', linewidth=0.5)
+    plt.hist(x_vec, color = 'lightblue', edgecolor = 'black',
+         bins = np.arange(min(x_vec), max(x_vec) + 2) - 0.5)
+    plt.xticks(range(min(x_vec), max(x_vec) + 1))
+    plt.xlim([min(x_vec) - 1, max(x_vec) + 1])
     plt.show()
