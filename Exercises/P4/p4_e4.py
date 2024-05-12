@@ -16,7 +16,7 @@ def AyR():
             return Y
 
 x_vec = graph.generateDVA(N_SIM, AyR, *[])
-graph.graphDVA(x_vec, title='Aceptacion y Rechazo')
+graph.graphDVA(x_vec, N_SIM, title='Aceptacion y Rechazo')
 
 
 # b) Metodo de la transformada inversa
@@ -29,7 +29,7 @@ def transformadaInversa():
     return i
 
 x_vec = graph.generateDVA(N_SIM, transformadaInversa, *[])
-graph.graphDVA(x_vec, title='Transformada inversa')
+graph.graphDVA(x_vec, N_SIM, title='Transformada inversa')
 
 
 # c) Metodo de la urna (k = 100)
@@ -43,4 +43,4 @@ def metodoUrna():
     return urna[U]
     
 x_vec = graph.generateDVA(N_SIM, metodoUrna, *[])
-graph.graphDVA(x_vec, title='Metodo de la urna')
+graph.graphDVA(x_vec, N_SIM, title='Metodo de la urna')
