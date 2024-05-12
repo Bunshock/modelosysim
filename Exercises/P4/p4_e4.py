@@ -1,6 +1,7 @@
 from random import random
-import Tools.graph as graph
+from Tools.randomGenerators import generateDVA
 from Tools.timeEfficiency import timeEfficiency
+import Tools.graph as graph
 
 # X takes values i in {1,...,10} with probabilities p[i]:
 p = [0.11, 0.14, 0.09, 0.08, 0.12, 0.10, 0.09, 0.07, 0.11, 0.09]
@@ -20,7 +21,7 @@ def AyR():
 # Calculate time efficiency for this method
 time_AyR = 0
 for _ in range(N_TIME_CHECKS):
-    x_vec, time_elapsed = timeEfficiency(graph.generateDVA, *[N_SIM, AyR, *[]])
+    x_vec, time_elapsed = timeEfficiency(generateDVA, *[N_SIM, AyR, *[]])
     time_AyR += time_elapsed
 print(f'Time efficiency of AyR ({N_SIM} iterations): {(time_AyR / N_TIME_CHECKS * 1000):.4f} ms')
 
@@ -40,7 +41,7 @@ def transformadaInversa():
 # Calculate time efficiency for this method
 time_TI = 0
 for _ in range(N_TIME_CHECKS):
-    x_vec, time_elapsed = timeEfficiency(graph.generateDVA, *[N_SIM, transformadaInversa, *[]])
+    x_vec, time_elapsed = timeEfficiency(generateDVA, *[N_SIM, transformadaInversa, *[]])
     time_TI += time_elapsed
 print(f'Time efficiency of Transformada Inversa ({N_SIM} iterations): {(time_TI / N_TIME_CHECKS * 1000):.4f} ms')
 
@@ -61,7 +62,7 @@ def metodoUrna():
 # Calculate time efficiency for this method
 time_urna = 0
 for _ in range(N_TIME_CHECKS):
-    x_vec, time_elapsed = timeEfficiency(graph.generateDVA, *[N_SIM, metodoUrna, *[]])
+    x_vec, time_elapsed = timeEfficiency(generateDVA, *[N_SIM, metodoUrna, *[]])
     time_urna += time_elapsed
 print(f'Time efficiency of urna ({N_SIM} iterations): {(time_urna / N_TIME_CHECKS * 1000):.4f} ms')
 
