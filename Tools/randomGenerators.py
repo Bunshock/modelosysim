@@ -129,55 +129,82 @@ def averageLLN(g, N, N_SIM):
 
 
 if __name__ == '__main__':
-    NVars = int(input('Input number of samples: '))
-    assert NVars > 0, 'NVars should be a positive integer!'
 
-    # Generic inverse transform
-    x = [1, 2, 5]
-    p = [0.1, 0.6, 0.3]
+    N_SIM = int(input('Input number simulation iterations (N_SIM): '))
+    assert N_SIM > 0, 'N_SIM should be a positive integer!'
+
+    # Distributions data
+    discrete = [
+        ['Inverse Transform (discrete) (input values manually)', 'inverseTransformDVA', [
+            ('x', 'values arrary'),
+            ('p', 'probabilities array')
+        ]],
+        ['Uniform (Inverse Transform)', 'uniformDVA', [
+            ('a', 'lower bound'),
+            ('b', 'upper bound')
+        ]],
+        ['Geometric (Inverse Transform)', 'geometricVA', [
+            ('p', 'probability')
+        ]],
+        ['Bernoulli (Inverse Transform)', 'bernoulliVA', [
+            ('p', 'probability')
+        ]],
+        ['Poisson (Inverse Transform) (non-optimized)', 'poissonVA', [
+            ('lambda', 'mean')
+        ]],
+        ['Poisson (Inverse Transform) (optimized)', 'poissonOptimizedVA', [
+            ('lambda', 'mean')
+        ]],
+        ['Binomial (Inverse Transform)', 'binomialVA', [
+            ('n', 'sample size'),
+            ('p', 'probability')
+        ]]
+    ]
+
+    continuous = [
+
+    ]
+
+    # Show available distributions
+    distr_type = int(input('Input distribution type (1: discrete, 2: continuous): '))
+    distr_type = ['discrete', 'continuous'][distr_type-1]
+    print(f'Available {distr_type} distributions:')
+    distr_array = locals()[f'{distr_type}']
+    for distr_index, distr in enumerate(distr_array):
+        print(f'{distr_index}- {distr[0]}')
     
-    x_vec = graph.generateDVA(NVars, inverseTransformDVA, *[x, p])
-    graph.graphDVA(x_vec, title=f'Inverse Transform\nx={x}\np={p}')
+    distr = distr_array[
+        int(input('Enter desired distribution number: '))
+    ]
 
-    # Uniform distribution
-    a = int(input('Input Uniform variable lower bound (a): '))
-    b = int(input('Input Uniform variable upper bound (b): '))
-    assert b > a, 'Invalid bounds!'
+    # Auxiliar function to parse numeric arguments
+    def interpretedNumberType(x):
+        if ',' in x and '.' in x:
+            str_arr = x.split(', ')
+            num_arr = []
+            for s in str_arr:
+                num_arr.append(float(s))
+            return num_arr
+        elif ',' in x:
+            str_arr = x.split(', ')
+            num_arr = []
+            for s in str_arr:
+                num_arr.append(int(s))
+            return num_arr
+        elif '.' in x:
+            return float(x)
+        else:
+            return int(x)
 
-    x_vec = graph.generateDVA(NVars, uniformDVA, *[a, b])
-    graph.graphDVA(x_vec, title=f'Uniform X ~ U[{a},{b}]')
+    # Get distribution parameters
+    distr_args, params_str = [], ''
+    for arg in distr[2]:
+        new_arg = interpretedNumberType(
+            input(f'Enter {arg[1]} parameter ({arg[0]}): ')
+        )
+        distr_args.append(new_arg)
+        params_str += f'{arg[0]} = {new_arg}   '
 
-    # Geometric distribution
-    pG = float(input('Input Geometric variable probability (p): '))
-    assert 0 <= pG <= 1
-
-    x_vec = graph.generateDVA(NVars, geometricVA, *[pG])
-    graph.graphDVA(x_vec, title=f'Geometric X ~ Geom({pG})')
-
-    # Bernoulli distribution
-    pB = float(input('Input Bernoulli variable probability (p): '))
-    assert 0 <= pB <= 1
-
-    x_vec = graph.generateDVA(NVars, bernoulliVA, *[pB])
-    graph.graphDVA(x_vec, title=f'Bernoulli X ~ B({pB})')
-
-    # Poisson distribution
-    lamb = float(input('Input Poisson variable lambda: '))
-    assert lamb > 0
-
-    # Poisson distribution (non-optimized)
-    x_vec = graph.generateDVA(NVars, poissonVA, *[lamb])
-    graph.graphDVA(x_vec, title=f'Poisson X ~ P({lamb})  (non-optimized)')
-
-    # Poisson distribution (optimized)
-    x_vec = graph.generateDVA(NVars, poissonOptimizedVA, *[lamb])
-    graph.graphDVA(x_vec, title=f'Poisson X ~ P({lamb})  (optimized)')
-
-    # Binomial distribution
-    n = int(input('Input Binomial variable n: '))
-    pBin = float(input('Input Binomial variable probability (p): '))
-    assert n > 0
-    assert 0 <= pBin <= 1
-
-    x_vec = graph.generateDVA(NVars, binomialVA, *[n, pBin])
-    graph.graphDVA(x_vec, title=f'Binomial X ~ B({n},{pBin})')
+    # Graph distribution
+    x_vec = graph.generateDVA(N_SIM, globals()[f'{distr[1]}'], *distr_args)
+    graph.graphDVA(x_vec, N_SIM, title=f'{distr[0]} with parameters:\n{params_str.strip(' ')}')
