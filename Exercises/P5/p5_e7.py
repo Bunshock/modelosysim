@@ -42,7 +42,7 @@ def generarX_AyR():
         Y = random() * (math.e - 1) + 1
         U = random()
         c = math.e - 1
-        if U <= densidadX(Y) / (c * densidadX(Y)):
+        if U <= densidadX(Y) / (c * densidadY(Y)):
             return Y
 
 
