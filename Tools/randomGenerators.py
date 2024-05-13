@@ -29,6 +29,19 @@ def geometricVA(p):
     return int(math.log(1-U) / math.log(1-p)) + 1
 
 
+# Geometric distribution using recursive definition
+def geometricRecVA(p):
+    assert 0 <= p <= 1, 'Invalid value of p!'
+    U = random()
+    i, p_acc = 0, p
+    F = p
+    while U >= F:
+        i += 1
+        p_acc *= (1-p)
+        F += p_acc
+    return i
+
+
 # Bernoulli distribution: X ~ B(p)
 def bernoulliVA(p):
     assert 0 <= p <= 1, 'Invalid value of p!'
@@ -155,6 +168,9 @@ if __name__ == '__main__':
             ('b', 'upper bound')
         ]],
         ['Geometric (Inverse Transform)', 'geometricVA', [
+            ('p', 'probability')
+        ]],
+        ['Geometric (Inverse Transform) (Recursive formula)', 'geometricRecVA', [
             ('p', 'probability')
         ]],
         ['Bernoulli (Inverse Transform)', 'bernoulliVA', [
