@@ -4,12 +4,12 @@ import math
 
 # a) Algoritmo de generacion de proceso Poisson no homogeneo
 # con adelgazamiento
-def Poisson_no_homogeneo_adelgazamiento(lamb_fun, lamb, T):
+def Poisson_no_homogeneo_adelgazamiento(lamb_fun, lamb, T, t0=0):
     NT, Eventos = 0, []
     U = 1 - random()
 
     # Simulamos primer tiempo de arribo
-    t = - math.log(U) / lamb
+    t = - math.log(U) / lamb + t0
 
     while t <= T:
         # Vemos si aceptamos o no el evento
@@ -82,13 +82,13 @@ print('b)')
 # Mejora del algoritmo de adelgazamiento
 # lamb_arr: arreglo con el lambda designado para cada intervalo
 # I_arr: arreglo con limites derechos de cada intervalo
-def Poisson_adelgazamiento_mejorado(lamb_fun, lamb_arr, I_arr, T):
+def Poisson_adelgazamiento_mejorado(lamb_fun, lamb_arr, I_arr, T, t0=0):
     NT, Eventos = 0, []
 
     # Indice que indica el intervalo actual
     j = 0
     # Genero primer tiempo de arribo con una exp(lamb_0)
-    t = - math.log(1 - random()) / lamb_arr[j]
+    t = - math.log(1 - random()) / lamb_arr[j] + t0
 
     while t <= T:
         # Vemos si el tiempo generado cae dentro del intervalo actual
