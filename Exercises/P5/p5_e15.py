@@ -39,8 +39,16 @@ for _ in range(N_SIM):
     if NT_I <= 9:
         count_I += 1
 
+count_I_b = 0
+for _ in range(N_SIM):
+    NT_I_b, _ = Poisson_no_homogeneo_adelgazamiento(lambda_I, 13/3, 2.9, t0=2.5)
+    if NT_I_b <= 2:
+        count_I_b += 1
+
 print(f'Valor exacto de P(N(2) <= 9) = 0.409656')
 print(f'Valor estimado ({N_SIM} simulaciones) de P(N(2) <= 9) = {(count_I / N_SIM):.5f}')
+print(f'Valor exacto de P(N(2.9) - N(2.5) <= 2) = 0.774835')
+print(f'Valor estimado ({N_SIM} simulaciones) de P(N(2.9) - N(2.5) <= 2) = {(count_I_b / N_SIM):.5f}')
 
 # (ii) Elijo lambda = 21, calculamos P(N(2) <= 30)
 print('(ii)')
@@ -87,7 +95,10 @@ def Poisson_adelgazamiento_mejorado(lamb_fun, lamb_arr, I_arr, T, t0=0):
 
     # Indice que indica el intervalo actual
     j = 0
-    # Genero primer tiempo de arribo con una exp(lamb_0)
+    # Movemos j dependiendo del tiempo inicial t0
+    while j >= I_arr[j]: j+= 1
+
+    # Genero primer tiempo de arribo con una exp(lamb_j0)
     t = - math.log(1 - random()) / lamb_arr[j] + t0
 
     while t <= T:
