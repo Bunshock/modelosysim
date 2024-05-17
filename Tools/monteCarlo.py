@@ -6,10 +6,10 @@ import numpy as np
 # Maybe change to Hash-map
 MONTE_CARLO_METHOD = {
     '1-01': lambda g, x: g(x),
-    '1-AB': lambda g, a, b, x: g(a + (b-a) * x),
+    '1-AB': lambda g, a, b, x: g(a + (b-a) * x) * (b-a),
     '1-0INF': lambda g, x: g((1/x) - 1) / (x ** 2),
     '2-01': lambda g, x, y: g(x, y),
-    '2-AB': lambda g, a, b, c, d, x, y: g(a + (b-a)*x, c + (d-c)*y),
+    '2-AB': lambda g, a, b, c, d, x, y: g(a + (b-a)*x, c + (d-c)*y) * (b-a) * (d-c),
     '2-0INF': lambda g, x, y: g(1/x - 1, 1/y - 1) / ((x ** 2) * (y ** 2))
 }
 
