@@ -163,6 +163,9 @@ def testKolmogorovSmirnovEstimando(N_SIM, estimadores, muestra, F, simular, *par
     pvalor = 0
     for _ in range(N_SIM):
         datos = []
+        # Si el p-valor no es muy proximo al nivel de rechazo
+        # deseado, usar uniformes en vez de la distribucion
+        # de H0!! (como en la funcion anterior)
         for _ in range(N):
             datos.append(simular(*parametros, *estimados))
         datos.sort()
